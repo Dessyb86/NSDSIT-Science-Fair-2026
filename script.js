@@ -1,4 +1,3 @@
-
 const grid = document.getElementById("projectGrid");
 const searchInput = document.getElementById("searchInput");
 const gradeFilter = document.getElementById("gradeFilter");
@@ -6,9 +5,10 @@ const subjectFilter = document.getElementById("subjectFilter");
 const projectCount = document.getElementById("projectCount");
 
 const grades = [...new Set(PROJECTS.map(p => p.grade).filter(Boolean))]
-  .sort((a,b) => Number(a) - Number(b));
+  .sort((a, b) => Number(a) - Number(b));
+
 const subjects = [...new Set(PROJECTS.map(p => p.subject).filter(Boolean))]
-  .sort((a,b) => a.localeCompare(b));
+  .sort((a, b) => a.localeCompare(b));
 
 for (const grade of grades) {
   const option = document.createElement("option");
@@ -57,7 +57,12 @@ function renderProjects() {
   projectCount.textContent = filtered.length;
 
   if (!filtered.length) {
-    grid.innerHTML = `<div class="project-card"><h3>No projects found</h3><p>Try adjusting your search or filters.</p></div>`;
+    grid.innerHTML = `
+      <div class="project-card">
+        <h3>No projects found</h3>
+        <p>Try adjusting your search or filters.</p>
+      </div>
+    `;
     return;
   }
 
@@ -69,17 +74,43 @@ function renderProjects() {
     return `
       <article class="project-card">
         <div class="meta">
-          <span class="pill">Grade ${escapeHTML(project.grade || "N/A")}</span>
-          <span class="pill">${escapeHTML(project.subject || "General Science")}</span>
+          <span class="pill">
+            Grade ${escapeHTML(project.grade || "N/A")}
+          </span>
+          <span class="pill">
+            ${escapeHTML(project.subject || "General Science")}
+          </span>
         </div>
-        <h3>${escapeHTML(project.title || "Untitled Project")}</h3>
+
+        <h3>
+          ${escapeHTML(project.title || "Untitled Project")}
+        </h3>
+
         <div class="students">
           <strong>Student(s)</strong>
           ${students || "<span>Not listed</span>"}
         </div>
-        ${project.question ? `<div class="detail"><strong>Research Question</strong><p>${escapeHTML(project.question)}</p></div>` : ""}
-        ${project.purpose ? `<details class="detail"><summary>Purpose</summary><p>${escapeHTML(project.purpose)}</p></details>` : ""}
-        ${project.abstract ? `<details class="detail"><summary>Abstract / Project Summary</summary><p>${escapeHTML(project.abstract)}</p></details>` : ""}
+
+        ${project.question ? `
+          <div class="detail">
+            <strong>Research Question</strong>
+            <p>${escapeHTML(project.question)}</p>
+          </div>
+        ` : ""}
+
+        ${project.purpose ? `
+          <details class="detail">
+            <summary>Purpose</summary>
+            <p>${escapeHTML(project.purpose)}</p>
+          </details>
+        ` : ""}
+
+        ${project.abstract ? `
+          <details class="detail">
+            <summary>Abstract / Project Summary</summary>
+            <p>${escapeHTML(project.abstract)}</p>
+          </details>
+        ` : ""}
       </article>
     `;
   }).join("");
